@@ -1,3 +1,4 @@
+//not using it will see if we need to keep it
 export const authReducer = (prevState, action) => {
   switch (action.type) {
     case 'RESTORE_TOKEN':

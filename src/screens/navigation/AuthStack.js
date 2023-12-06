@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import axios from 'axios';
-import {LoginScreen} from './LoginScreen';
+import {LoginScreen} from '../LoginScreen';
 
 const AuthStack = createNativeStackNavigator();
 export function AuthScreenStack() {

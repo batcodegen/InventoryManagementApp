@@ -1,4 +1,4 @@
-import {AuthProvider} from './contexts/AuthContext';
+import {AuthProvider} from './src/contexts/AuthContext';
 import AppNavigation from './AppNavigation';
 
 export default function App() {

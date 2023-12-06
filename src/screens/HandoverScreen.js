@@ -1,12 +1,12 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {StatusBar} from 'native-base';
-import {styles} from './DrawerStack';
+import {styles} from './navigation/DrawerStack';
 
 export function ProfileScreen() {
   return (
     <View style={styles.container}>
-      <Text>This is the ProfileScreen page</Text>
+      <Text>This is the HandoverScreen page</Text>
       <StatusBar style="auto" />
     </View>
   );

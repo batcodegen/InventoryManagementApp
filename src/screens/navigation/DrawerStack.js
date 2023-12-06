@@ -5,9 +5,9 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {HomeScreen} from './HomeScreen';
-import {ProfileScreen} from './ProfileScreen';
-import {useAuthDispatch} from '../contexts/AuthContext';
+import {HomeScreen} from '../HomeScreen';
+import {HandoverScreen} from '../HandoverScreen';
+import {useAuthDispatch} from '../../contexts/AuthContext';
 
 function CustomDrawerContent(props) {
   const dispatch = useAuthDispatch();
@@ -48,7 +48,7 @@ export function DrawerScreenStack() {
       initialRouteName="Home"
       drawerContent={props => <CustomDrawerContent {...props} />}>
       <DrawerStack.Screen name="Home" component={HomeScreen} />
-      <DrawerStack.Screen name="Profile" component={ProfileScreen} />
+      <DrawerStack.Screen name="Profile" component={HandoverScreen} />
     </DrawerStack.Navigator>
   );
 }

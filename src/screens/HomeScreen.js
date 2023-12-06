@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Text, View} from 'react-native';
 import {StatusBar} from 'native-base';
-import {styles} from './DrawerStack';
+import {styles} from './navigation/DrawerStack';
 
 export function HomeScreen({navigation}) {
   return (

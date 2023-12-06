@@ -1,8 +1,8 @@
 import React, {useContext, View} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {HomeScreenStack} from './screens/HomeStack';
-import {AuthScreenStack} from './screens/AuthStack';
-import {AuthContext} from './contexts/AuthContext';
+import {HomeScreenStack} from './src/screens/navigation/HomeStack';
+import {AuthScreenStack} from './src/screens/navigation/AuthStack';
+import {AuthContext} from './src/contexts/AuthContext';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ActivityIndicator} from 'react-native';
