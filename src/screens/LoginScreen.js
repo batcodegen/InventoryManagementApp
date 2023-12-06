@@ -12,7 +12,7 @@ export const LoginScreen = ({navigation}) => {
     password: '',
     userData: {fname: '', lastName: ''},
   });
-  const {login} = useContext(AuthContext);
+  const {isLoading, userToken, login} = useContext(AuthContext);
 
   const onPressLogin = async (email, password) => {
     // Call backend api to authenticate
@@ -28,6 +28,7 @@ export const LoginScreen = ({navigation}) => {
     //   });
     //this.setState({ userData: JSON.stringify( res.user) });
     setSignInLoading(true);
+    login();
 
     // axios({
     //   method: 'POST',
@@ -65,7 +66,6 @@ export const LoginScreen = ({navigation}) => {
     });
     try {
       await AsyncStorage.setItem('userData', JSON.stringify(user));
-      navigation.navigate('HomeScreen');
     } catch (error) {
       console.log('Error saving data', error);
     }

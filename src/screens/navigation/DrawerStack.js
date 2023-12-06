@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {
   createDrawerNavigator,
@@ -7,11 +7,11 @@ import {
 } from '@react-navigation/drawer';
 import {HomeScreen} from '../HomeScreen';
 import {HandoverScreen} from '../HandoverScreen';
-import {useAuthDispatch} from '../../contexts/AuthContext';
 
 function CustomDrawerContent(props) {
-  const dispatch = useAuthDispatch();
-
+  useEffect(() => {
+    console.log('inside custom drawer stack');
+  });
   return (
     <>
       <DrawerContentScrollView {...props}>
@@ -29,7 +29,6 @@ function CustomDrawerContent(props) {
             props.navigation.closeDrawer();
             try {
               //Logout logic
-              dispatch({type: 'SIGN_OUT'});
             } catch (e) {
               console.log(e);
             }
@@ -42,13 +41,17 @@ function CustomDrawerContent(props) {
 
 const DrawerStack = createDrawerNavigator();
 export function DrawerScreenStack() {
+  useEffect(() => {
+    console.log('inside  drawer stack');
+  });
   return (
     <DrawerStack.Navigator
+      drawerType="front"
       screenOptions={{headerShown: false}}
-      initialRouteName="Home"
+      initialRouteName="HomeScreen"
       drawerContent={props => <CustomDrawerContent {...props} />}>
       <DrawerStack.Screen name="Home" component={HomeScreen} />
-      <DrawerStack.Screen name="Profile" component={HandoverScreen} />
+      <DrawerStack.Screen name="HandOver" component={HandoverScreen} />
     </DrawerStack.Navigator>
   );
 }

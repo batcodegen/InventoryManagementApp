@@ -17,11 +17,7 @@ const HomeStack = createNativeStackNavigator();
 export function HomeScreenStack() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="DrawerHome"
-        component={DrawerScreenStack}
-        screenOptions={{headerShown: false}}
-      />
+      <HomeStack.Screen name="DrawerHome" component={DrawerScreenStack} />
       <HomeStack.Screen name="Detail" component={DetailScreen} />
     </HomeStack.Navigator>
   );
