@@ -1,0 +1,13 @@
+{
+  "deliveryTitle": "Cylinder Delivery - Refill",
+  "customerName": "Customer Name",
+  "cylinderHeld": "Cylinders Held",
+  "pendingPayment": "Pending Payment",
+  "delivered": "Delivered",
+  "collected": "Collected",
+  "paymentToCollect": "Payment to be collected",
+  "securityDeposit": "Security Deposit",
+  "paymentCollected": "Payment Collected",
+  "balance": "Balance",
+  "paymentMode": "Payment Mode"
+}
