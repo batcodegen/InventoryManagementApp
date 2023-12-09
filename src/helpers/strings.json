@@ -9,5 +9,7 @@
   "securityDeposit": "Security Deposit",
   "paymentCollected": "Payment Collected",
   "balance": "Balance",
-  "paymentMode": "Payment Mode"
+  "paymentMode": "Payment Mode",
+  "discount": "Discount",
+  "rate": "Rate"
 }
