@@ -5,8 +5,9 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {HomeScreen} from '../HomeScreen';
+import HomeScreen from '../HomeScreen';
 import {HandoverScreen} from '../HandoverScreen';
+import {CylinderDelivery} from '../CylinderDelivery';
 
 function CustomDrawerContent(props) {
   useEffect(() => {
@@ -16,7 +17,7 @@ function CustomDrawerContent(props) {
     <>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerHeader}>
-          <Text>HEADER</Text>
+          <Text style={styles.customerName}>Welcome customer</Text>
         </View>
         <View style={{flex: 1}}>
           <DrawerItemList {...props} />
@@ -47,11 +48,19 @@ export function DrawerScreenStack() {
   return (
     <DrawerStack.Navigator
       drawerType="front"
-      screenOptions={{headerShown: false}}
+      screenOptions={{headerShown: true}}
       initialRouteName="HomeScreen"
       drawerContent={props => <CustomDrawerContent {...props} />}>
-      <DrawerStack.Screen name="Home" component={HomeScreen} />
-      <DrawerStack.Screen name="HandOver" component={HandoverScreen} />
+      <DrawerStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{headerTitle: 'Home'}}
+      />
+      <DrawerStack.Screen
+        name="Cylinder Delivery"
+        component={CylinderDelivery}
+      />
+      <DrawerStack.Screen name="Handover" component={HandoverScreen} />
     </DrawerStack.Navigator>
   );
 }
@@ -64,11 +73,16 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   drawerHeader: {
-    height: 100,
     backgroundColor: '#F1F1F1',
     margin: 10,
     marginTop: 0,
     marginBottom: 8,
     borderRadius: 8,
+  },
+  customerName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 10,
+    textAlign: 'center',
   },
 });
