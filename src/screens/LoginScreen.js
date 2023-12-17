@@ -3,7 +3,6 @@ import {Text, View, TextInput, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {styles} from './navigation/AuthStack';
 import {AuthContext} from '../contexts/AuthContext';
-import {HomeScreen} from './HomeScreen';
 
 export const LoginScreen = ({navigation}) => {
   const [signInLoading, setSignInLoading] = useState(false);
