@@ -1,83 +1,58 @@
-import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 
-const CyclinderDelivery = () => {
-  const [state, setState] = useState({
-    emailId: '',
-    password: '',
-    userData: {fname: '', lastName: ''},
-  });
-
-  const handleOnChange = (text, input) => {
-    setState(prevState => ({...prevState, [input]: text}));
-  };
-
-  const onPressSubmit = async () => {
-    // handle submit logic
-  };
-
+export function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      <Text style={styles.subTitle}> Welcome Back!</Text>
+      <View style={styles.card1}>
+        <Text>Total empty cylinders : 20</Text>
+      </View>
+      <View style={styles.card2}>
+        <Text>Total filled cylinders: 100</Text>
+        <Text>Total amount collected : 2200</Text>
+      </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  subTitle: {
-    fontSize: 15,
-    color: '#6495ED',
-    marginBottom: 40,
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 30,
-    color: '#6495ED',
-    marginBottom: 20,
-  },
-  inputView: {
+  card1: {
     width: '80%',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  inputText: {
-    height: 50,
-    color: 'black',
-  },
-  forgotAndSignUpText: {
-    color: 'white',
-    fontSize: 11,
-  },
-  loginBtn: {
-    width: '80%',
-    backgroundColor: '#6495ED',
-    borderRadius: 25,
-    height: 50,
+    height: 100,
+    backgroundColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
-    marginBottom: 10,
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
-  loginText: {
-    color: 'white',
+  card2: {
+    marginTop: 20,
+    width: '80%',
+    height: 100,
+    backgroundColor: 'lightcyan',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 });
-
-export default CyclinderDelivery;
