@@ -5,16 +5,16 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {CyclinderDeliveryScreen} from '../CyclinderDeliveryScreen';
-import {HandoverScreen} from '../HandoverScreen';
 import {HomeScreen} from '../HomeScreen';
+import {HandoverScreen} from '../HandoverScreen';
+import {CylinderDelivery} from '../CylinderDelivery';
 
 function CustomDrawerContent(props) {
   return (
     <>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerHeader}>
-          <Text>Welcome</Text>
+          <Text style={styles.customerName}>Welcome customer</Text>
         </View>
         <View style={{flex: 1}}>
           <DrawerItemList {...props} />
@@ -42,13 +42,17 @@ export function DrawerScreenStack() {
   return (
     <DrawerStack.Navigator
       drawerType="front"
-      screenOptions={{headerShown: false}}
+      screenOptions={{headerShown: true}}
       initialRouteName="HomeScreen"
       drawerContent={props => <CustomDrawerContent {...props} />}>
-      <DrawerStack.Screen name="Home" component={HomeScreen} />
       <DrawerStack.Screen
-        name="Cyclinder Delivery Screen"
-        component={CyclinderDeliveryScreen}
+        name="Home"
+        component={HomeScreen}
+        options={{headerTitle: 'Home'}}
+      />
+      <DrawerStack.Screen
+        name="Cylinder Delivery"
+        component={CylinderDelivery}
       />
       <DrawerStack.Screen name="Handover" component={HandoverScreen} />
     </DrawerStack.Navigator>
@@ -63,8 +67,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   drawerHeader: {
-    flex: 1,
-    height: 100,
     backgroundColor: '#F1F1F1',
     margin: 5,
     marginTop: 0,
@@ -72,5 +74,11 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  customerName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 10,
+    textAlign: 'center',
   },
 });
