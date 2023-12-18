@@ -24,12 +24,6 @@ export function HomeScreenStack() {
         component={DrawerScreenStack}
         options={({navigation, route}) => ({
           headerShown: false,
-          headerLeft: () => (
-            <Pressable
-              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-              <Ionicon name={'menu'} size={20} />
-            </Pressable>
-          ),
         })}
       />
       <HomeStack.Screen name="Detail" component={DetailScreen} />

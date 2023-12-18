@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
 
 const DropDownFile = ({
@@ -9,7 +9,13 @@ const DropDownFile = ({
   onSelect,
   showSearch = true,
 }) => {
-  const [value, setValue] = useState(data[0][labelField]);
+  const [value, setValue] = useState('');
+
+  useEffect(() => {
+    if (data) {
+      setValue(data?.[0]?.[labelField]);
+    }
+  }, [data]);
 
   const renderItem = item => {
     return (
@@ -26,6 +32,11 @@ const DropDownFile = ({
       </View>
     );
   };
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <Dropdown
       style={styles.dropdown}

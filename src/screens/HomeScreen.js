@@ -1,16 +1,27 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useGetApi} from '../services/useApi';
+import Loader from '../common/Loader';
 
 export function HomeScreen() {
+  const {data, isLoading, error} = useGetApi('/overview');
+
   return (
     <View style={styles.container}>
       <View style={styles.card1}>
-        <Text>Total empty cylinders : 20</Text>
+        <Text>{`Total empty cylinders : ${
+          data?.emptyCylinderData?.total ?? 0
+        }`}</Text>
       </View>
       <View style={styles.card2}>
-        <Text>Total filled cylinders: 100</Text>
-        <Text>Total amount collected : 2200</Text>
+        <Text>{`Total filled cylinders: ${
+          data?.filledCylinderData?.total ?? 0
+        }`}</Text>
+        <Text>{`Total amount collected : ${
+          data?.filledCylinderData?.amount ?? 0
+        }`}</Text>
       </View>
+      <Loader isLoading={isLoading} />
     </View>
   );
 }

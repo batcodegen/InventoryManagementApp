@@ -5,14 +5,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import DropDownFile from './DropDown';
 import weights from '../dummydata/containerweight.json';
+import {useGetApi} from '../services/useApi';
 
 const DeliverTable = ({onRemove, index, updateData, itemsLength}) => {
+  //api
+  const {data, isLoading, error} = useGetApi('/weights');
   const [quantity, setQuantity] = useState('1');
-  const [selectedWeight, setSelectedWeight] = useState(weights[0].value);
-  const [rate, setRate] = useState(100);
+  const [selectedWeight, setSelectedWeight] = useState('');
+  const [rate, setRate] = useState(0);
+
+  useEffect(() => {
+    if (data) {
+      setSelectedWeight(data?.[0]?.value);
+      setRate(data?.[0]?.price);
+    }
+  }, [data]);
 
   const calculateRate = (weight, quantityText) => {
     const selectedObject = weights.find(item => item.value === weight);
@@ -22,6 +32,10 @@ const DeliverTable = ({onRemove, index, updateData, itemsLength}) => {
     setRate(rates);
     updateData(index, {quantity: quantityText, weight: weight, rate: rates});
   };
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
