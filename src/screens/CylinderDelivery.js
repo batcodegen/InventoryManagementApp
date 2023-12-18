@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
+  ActivityIndicator,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -8,8 +9,6 @@ import {
   View,
 } from 'react-native';
 import DropDownFile from '../common/DropDown';
-import dummyUser from '../dummydata/customer.json';
-import deliverydata from '../dummydata/deliverydata.json';
 import string from '../helpers/strings.json';
 import TableView from '../common/TableView';
 import DeliverTable from '../common/DeliverTable';
@@ -17,11 +16,12 @@ import CollectTable from '../common/CollecteTable';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import NewUser from '../common/NewUser';
+import {useGetApi} from '../services/useApi';
+import Loader from '../common/Loader';
 
 export function CylinderDelivery({navigation}) {
   // bottom sheet vars
   const bottomSheetRef = useRef(null);
-
   const snapPoints = useMemo(() => ['90%'], []);
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -39,12 +39,22 @@ export function CylinderDelivery({navigation}) {
     ),
     [],
   );
+
+  // init states
   const [items, setItems] = useState([
     {id: 1, quantity: '', weight: '', rate: '0'},
   ]);
   const [collectItems, setCollectItems] = useState([
     {id: 1, quantity: '', weight: ''},
   ]);
+
+  // apis
+  const {data, error, isLoading} = useGetApi('/customers');
+  const {
+    data: deliverydata,
+    error: deliverydataError,
+    isLoading: deliverydataLoading,
+  } = useGetApi('/deliverydata');
 
   const handleAdd = () => {
     setItems([
@@ -118,7 +128,7 @@ export function CylinderDelivery({navigation}) {
         </View>
         <View style={styles.valueContainer}>
           <DropDownFile
-            data={dummyUser}
+            data={data}
             labelField={'name'}
             valueField={'name'}
             onSelect={item => console.log(item)}
@@ -127,15 +137,15 @@ export function CylinderDelivery({navigation}) {
       </View>
       <TableView
         title={string.pendingPayment}
-        value={deliverydata[0].pendingpayment}
+        value={deliverydata?.[0]?.pendingpayment}
       />
       <TableView
         title={string.cylinderHeld}
-        value={deliverydata[0].cylinderHeld}
+        value={deliverydata?.[0]?.cylinderHeld}
       />
       <TableView
         title={string.discount}
-        value={`${deliverydata[0].discount}%`}
+        value={`${deliverydata?.[0]?.discount}%`}
       />
 
       {/* Delivered view */}
@@ -237,6 +247,7 @@ export function CylinderDelivery({navigation}) {
         backdropComponent={renderBackdrop}>
         <NewUser />
       </BottomSheet>
+      <Loader isLoading={isLoading} />
     </ScrollView>
   );
 }
