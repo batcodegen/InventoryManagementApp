@@ -6,15 +6,6 @@ import {StatusBar} from 'native-base';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {DrawerActions} from '@react-navigation/native';
 
-function DetailScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>This is the detail page</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
 const HomeStack = createNativeStackNavigator();
 export function HomeScreenStack() {
   return (
@@ -26,7 +17,6 @@ export function HomeScreenStack() {
           headerShown: false,
         })}
       />
-      <HomeStack.Screen name="Detail" component={DetailScreen} />
     </HomeStack.Navigator>
   );
 }
