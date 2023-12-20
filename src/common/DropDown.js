@@ -53,8 +53,8 @@ const DropDownFile = ({
       searchPlaceholder="Search..."
       value={value}
       onChange={item => {
-        setValue(item.value);
-        onSelect(item.value);
+        setValue(item[labelField]);
+        onSelect(item[labelField]);
       }}
       // renderLeftIcon={() => (
       //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />

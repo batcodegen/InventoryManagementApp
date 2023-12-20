@@ -5,6 +5,7 @@ import customers from '../dummydata/customer.json';
 import weights from '../dummydata/containerweight.json';
 import deliverydata from '../dummydata/deliverydata.json';
 import overviewdata from '../dummydata/overviewdata.json';
+import stockreport from '../dummydata/stockreport.json';
 
 const ENABLE_MOCK_RESPONSE = true;
 const mockAdapter = new MockAdapter(axios, {delayResponse: 2000});
@@ -29,6 +30,11 @@ const createMockResponse = (url: string) => {
     case '/overview':
       mockAdapter.onGet(url).reply(200, {
         data: overviewdata,
+      });
+      break;
+    case '/stockreport':
+      mockAdapter.onGet(url).reply(200, {
+        data: stockreport,
       });
       break;
     default:
