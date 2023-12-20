@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '80%',
     height: 100,
-    backgroundColor: 'lightcyan',
+    backgroundColor: 'lightCyan',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
