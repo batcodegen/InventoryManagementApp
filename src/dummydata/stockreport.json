@@ -1,0 +1,98 @@
+{
+  "summaryreport": [
+    {
+      "weight": "12kg",
+      "filled": 30,
+      "empty": 12
+    },
+    {
+      "weight": "17kg",
+      "filled": 60,
+      "empty": 22
+    },
+    {
+      "weight": "20kg",
+      "filled": 70,
+      "empty": 72
+    },
+    {
+      "weight": "22kg",
+      "filled": 40,
+      "empty": 52
+    }
+  ],
+  "locationreport": [
+    {
+      "id": "1",
+      "location": "warehouse",
+      "filled": [
+        {
+          "weight": "12kg",
+          "quantity": 60
+        },
+        {
+          "weight": "17kg",
+          "quantity": 112
+        },
+        {
+          "weight": "33kg",
+          "quantity": 160
+        }
+      ],
+      "empty": [
+        {
+          "weight": "12kg",
+          "quantity": 10
+        },
+        {
+          "weight": "17kg",
+          "quantity": 110
+        },
+        {
+          "weight": "33kg",
+          "quantity": 120
+        },
+        {
+          "weight": "35kg",
+          "quantity": 6
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "location": "office",
+      "filled": [
+        {
+          "weight": "12kg",
+          "quantity": 60
+        },
+        {
+          "weight": "17kg",
+          "quantity": 12
+        },
+        {
+          "weight": "33kg",
+          "quantity": 10
+        }
+      ],
+      "empty": [
+        {
+          "weight": "12kg",
+          "quantity": 100
+        },
+        {
+          "weight": "17kg",
+          "quantity": 10
+        },
+        {
+          "weight": "33kg",
+          "quantity": 20
+        },
+        {
+          "weight": "35kg",
+          "quantity": 16
+        }
+      ]
+    }
+  ]
+}
