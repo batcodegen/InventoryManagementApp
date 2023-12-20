@@ -16,6 +16,7 @@ const CollectUserDetail = ({
   <View style={styles.subcontainer}>
     <Text style={styles.titleText}>{title}</Text>
     <TextInput
+      textBreakStrategy="simple"
       style={[styles.textinput, {height: multiline ? 40 : 30}]}
       onChangeText={setValue}
       value={fieldValue}
@@ -48,7 +49,7 @@ const NewUser = () => {
       />
       <View style={styles.button}>
         <TouchableOpacity onPress={addUserToList} style={styles.loginBtn}>
-          <Text style={styles.loginText}>LOGIN </Text>
+          <Text style={styles.loginText}>Create User </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -79,6 +80,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'ghostwhite',
     color: 'black',
+    padding: 0,
+    paddingStart: 2,
   },
   loginBtn: {
     width: '80%',

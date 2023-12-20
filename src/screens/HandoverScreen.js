@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   FlatList,
@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import {StatusBar} from 'native-base';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import BottomSheetComponent from '../common/BottomSheetComponent';
+import {ScrollView} from 'react-native-gesture-handler';
+import HandOverRequest from '../common/HandOverRequest';
 
 const DATA = [
   {
@@ -39,7 +42,7 @@ const Item = ({item, onPress, backgroundColor, textColor}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, {backgroundColor}]}>
     <View style={styles.textContainer}>
       <Text style={[styles.title, {color: textColor}]}>
-        {item.customerName}
+        {item.customerName} ` `
       </Text>
       <Text style={[styles.subTitle, {color: textColor}]}>
         {item.category} {item.type} : {item.quantity}
@@ -67,22 +70,27 @@ const onAcceptRequest = async () => {};
 
 export function HandoverScreen() {
   const [selectedId, setSelectedId] = useState();
+  const parentBottomSheetRef = useRef(null);
 
   const renderItem = ({item}) => {
     const backgroundColor = item.id === selectedId ? '#6495ED' : 'white';
     const color = item.id === selectedId ? 'white' : 'black';
 
     return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
+      <ScrollView>
+        <Item
+          item={item}
+          onPress={() => setSelectedId(item.id)}
+          backgroundColor={backgroundColor}
+          textColor={color}
+        />
+      </ScrollView>
     );
   };
 
-  const onPressHandover = async () => {};
+  const onPressHandover = () => {
+    parentBottomSheetRef.current.focus();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -97,6 +105,9 @@ export function HandoverScreen() {
         style={styles.handoverBtn}>
         <Text style={styles.handoverText}>HandOver </Text>
       </TouchableOpacity>
+      <BottomSheetComponent ref={parentBottomSheetRef}>
+        <HandOverRequest />
+      </BottomSheetComponent>
     </SafeAreaView>
   );
 }
@@ -108,6 +119,7 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 1,
+    flexDirection: 'row',
     padding: 10,
     marginTop: 5,
     marginHorizontal: 5,
@@ -135,8 +147,10 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   textContainer: {
+    flex: 1,
   },
   buttonContainer: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'flex-start',

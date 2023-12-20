@@ -14,31 +14,16 @@ import TableView from '../common/TableView';
 import DeliverTable from '../common/DeliverTable';
 import CollectTable from '../common/CollecteTable';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import NewUser from '../common/NewUser';
 import {useGetApi} from '../services/useApi';
 import Loader from '../common/Loader';
+import BottomSheetComponent from '../common/BottomSheetComponent';
 
 export function CylinderDelivery({navigation}) {
   // bottom sheet vars
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ['90%'], []);
-  const handleSheetChanges = useCallback(index => {
-    console.log('handleSheetChanges', index);
-  }, []);
-  const handleClosePress = () => bottomSheetRef.current.close();
-  const handlePresentModalPress = () => bottomSheetRef.current.snapToIndex(0);
-  const renderBackdrop = useCallback(
-    props => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        enableTouchThrough={false}
-      />
-    ),
-    [],
-  );
+  const parentBottomSheetRef = useRef(null);
+
+  const handlePresentModalPress = () => parentBottomSheetRef.current.focus();
 
   // init states
   const [items, setItems] = useState([
@@ -238,15 +223,9 @@ export function CylinderDelivery({navigation}) {
       <Pressable style={styles.button}>
         <Text style={{fontWeight: 'bold'}}>Submit</Text>
       </Pressable>
-      <BottomSheet
-        enablePanDownToClose
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        backdropComponent={renderBackdrop}>
+      <BottomSheetComponent ref={parentBottomSheetRef}>
         <NewUser />
-      </BottomSheet>
+      </BottomSheetComponent>
       <Loader isLoading={isLoading} />
     </ScrollView>
   );

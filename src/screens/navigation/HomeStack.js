@@ -3,8 +3,6 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {DrawerScreenStack} from './DrawerStack';
 import {StatusBar} from 'native-base';
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import {DrawerActions} from '@react-navigation/native';
 
 const HomeStack = createNativeStackNavigator();
 export function HomeScreenStack() {
