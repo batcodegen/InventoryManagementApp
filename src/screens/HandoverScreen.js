@@ -13,6 +13,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import BottomSheetComponent from '../common/BottomSheetComponent';
 import {ScrollView} from 'react-native-gesture-handler';
 import HandOverRequest from '../common/HandOverRequest';
+import {useGetApi} from '../services/useApi';
 
 const DATA = [
   {
@@ -42,7 +43,7 @@ const Item = ({item, onPress, backgroundColor, textColor}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, {backgroundColor}]}>
     <View style={styles.textContainer}>
       <Text style={[styles.title, {color: textColor}]}>
-        {item.customerName} ` `
+        {item.customerName}
       </Text>
       <Text style={[styles.subTitle, {color: textColor}]}>
         {item.category} {item.type} : {item.quantity}
