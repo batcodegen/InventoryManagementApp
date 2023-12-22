@@ -12,11 +12,16 @@ import {useGetApi} from '../services/useApi';
 
 const HandOverRequest = () => {
   const [quantity, setQuantity] = useState('');
-  const [address, setAddress] = useState('');
-  const [email, setEmail] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [SelectedType, setSelectedType] = useState('');
 
   const addRequestToList = () => {};
-  const {data, error, isLoading} = useGetApi('/customers');
+  const {data: customerData, error, isLoading} = useGetApi('/customers');
+  const {data: categories, error1, isLoading1} = useGetApi('/weights');
+  const types = [{name: 'empty'}, {name: 'filled'}];
+  console.log('customerData', customerData);
+  console.log('categories', categories);
+  console.log('types', types);
 
   return (
     <View style={styles.contentContainer}>
@@ -27,21 +32,55 @@ const HandOverRequest = () => {
         </View>
         <View style={styles.valueContainer}>
           <DropDownFile
-            data={data}
+            data={customerData}
             labelField={'name'}
             valueField={'name'}
             onSelect={item => console.log(item)}
           />
         </View>
       </View>
-      <View style={styles.subcontainer}>
-        <Text style={styles.titleText}>Quantity</Text>
-        <TextInput
-          textBreakStrategy="simple"
-          style={styles.textinput}
-          onChangeText={setQuantity}
-          value={quantity}
-        />
+      <View style={styles.dataContainer}>
+        <View style={styles.titleContainer}>
+          <Text>{string.category}</Text>
+        </View>
+        <View style={styles.valueContainer}>
+          <DropDownFile
+            data={categories}
+            labelField={'value'}
+            valueField={'value'}
+            showSearch={false}
+            onSelect={item => {
+              setSelectedCategory(item);
+            }}
+          />
+        </View>
+      </View>
+      <View style={styles.dataContainer}>
+        <View style={styles.titleContainer}>
+          <Text>{string.type}</Text>
+        </View>
+        <View style={styles.valueContainer}>
+          <DropDownFile
+            data={types}
+            labelField={'name'}
+            valueField={'name'}
+            showSearch={false}
+            onSelect={item => {
+              setSelectedType(item);
+            }}
+          />
+        </View>
+      </View>
+      <View style={styles.dataContainer}>
+        <Text style={styles.titleContainer}>Quantity</Text>
+        <View style={styles.valueContainer}>
+          <TextInput
+            textBreakStrategy="simple"
+            style={styles.textinput}
+            onChangeText={setQuantity}
+            value={quantity}
+          />
+        </View>
       </View>
       <View style={styles.button}>
         <TouchableOpacity onPress={addRequestToList} style={styles.loginBtn}>
@@ -56,12 +95,6 @@ export default HandOverRequest;
 
 const styles = StyleSheet.create({
   contentContainer: {flex: 1, padding: 20},
-  subcontainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -72,12 +105,13 @@ const styles = StyleSheet.create({
   titleText: {flex: 0.5, color: 'black', textAlign: 'center'},
   textinput: {
     flex: 1,
-    marginStart: 10,
-    borderRadius: 5,
+    marginStart: 0,
+    borderRadius: 10,
     backgroundColor: 'ghostwhite',
     color: 'black',
     padding: 0,
     paddingStart: 2,
+    height: 40,
   },
   loginBtn: {
     width: '80%',

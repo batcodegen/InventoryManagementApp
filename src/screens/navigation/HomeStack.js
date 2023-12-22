@@ -7,7 +7,7 @@ const HomeStack = createNativeStackNavigator();
 export function HomeScreenStack() {
   return (
     <HomeStack.Navigator>
-      {false ? (
+      {true ? (
         <HomeStack.Screen
           name="DrawerHome"
           component={DrawerScreenStack}

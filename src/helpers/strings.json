@@ -11,5 +11,7 @@
   "balance": "Balance",
   "paymentMode": "Payment Mode",
   "discount": "Discount",
-  "rate": "Rate"
+  "rate": "Rate",
+  "category": "Category",
+  "type":"Type"
 }

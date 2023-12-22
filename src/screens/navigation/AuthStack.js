@@ -65,4 +65,9 @@ export const styles = StyleSheet.create({
   loginText: {
     color: 'white',
   },
+  error: {
+    color: 'red',
+    fontSize: 20,
+    marginBottom: 12,
+  },
 });

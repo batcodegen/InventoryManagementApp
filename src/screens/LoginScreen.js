@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, View, TextInput, TouchableOpacity} from 'react-native';
+import {Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {styles} from './navigation/AuthStack';
 import {AuthContext} from '../contexts/AuthContext';
@@ -11,7 +11,31 @@ export const LoginScreen = ({navigation}) => {
     password: '',
     userData: {fname: '', lastName: ''},
   });
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
   const {isLoading, userToken, login} = useContext(AuthContext);
+
+  const validateForm = () => {
+    let errors = {};
+
+    // Validate email field
+    if (!state.emailId) {
+      errors.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(state.emailId)) {
+      errors.email = 'Email is invalid.';
+    }
+
+    // Validate password field
+    if (!state.password) {
+      errors.password = 'Password is required.';
+    } else if (state.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters.';
+    }
+
+    // Set the errors and update form validity
+    setErrors(errors);
+    setIsFormValid(Object.keys(errors).length === 0);
+  };
 
   const onPressLogin = async (email, password) => {
     // Call backend api to authenticate
@@ -72,7 +96,6 @@ export const LoginScreen = ({navigation}) => {
 
   useEffect(() => {
     console.log(state, '- Has changed');
-
     (async () => {
       try {
         let userData = await AsyncStorage.getItem('userData');
@@ -120,6 +143,8 @@ export const LoginScreen = ({navigation}) => {
           onChangeText={text => {
             handleOnChange(text, 'emailId');
           }}
+          onBlur={() => validateForm()}
+          onFocus={() => (errors.email = '')}
         />
       </View>
       <View style={styles.inputView}>
@@ -131,13 +156,25 @@ export const LoginScreen = ({navigation}) => {
           onChangeText={text => {
             handleOnChange(text, 'password');
           }}
+          onBlur={() => validateForm()}
+          onFocus={() => (errors.password = '')}
         />
       </View>
       <TouchableOpacity
         onPress={() => onPressLogin(state.emailId, state.password)}
-        style={styles.loginBtn}>
+        style={
+          state.emailId == '' || state.password == ''
+            ? [styles.loginBtn, {backgroundColor: 'lightgray'}]
+            : styles.loginBtn
+        }>
         <Text style={styles.loginText}>LOGIN </Text>
       </TouchableOpacity>
+      {/* Display error messages */}
+      {Object.values(errors).map((error, index) => (
+        <Text key={index} style={styles.error}>
+          {error}
+        </Text>
+      ))}
     </View>
   );
 };
