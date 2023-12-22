@@ -40,6 +40,11 @@ export function CylinderDelivery({navigation}) {
     error: deliverydataError,
     isLoading: deliverydataLoading,
   } = useGetApi('/deliverydata');
+  const {
+    data: weightsData,
+    isLoading: isLoadingWeights,
+    error: fetchWeightError,
+  } = useGetApi('/weights');
 
   const handleAdd = () => {
     setItems([
@@ -66,12 +71,12 @@ export function CylinderDelivery({navigation}) {
     ]);
   };
   const handleCollectUpdate = (index, newData) => {
-    const updatedItems = [...items];
+    const updatedItems = [...collectItems];
     updatedItems[index] = {...updatedItems[index], ...newData};
     setCollectItems(updatedItems);
   };
   const handleCollectRemove = index => {
-    const updatedItems = items.filter((_, i) => i !== index);
+    const updatedItems = collectItems.filter((_, i) => i !== index);
     setCollectItems(updatedItems);
   };
 
@@ -162,6 +167,7 @@ export function CylinderDelivery({navigation}) {
           {items.map((_, index) => (
             <View style={styles.tableContainer} key={_.id}>
               <DeliverTable
+                data={weightsData}
                 index={index}
                 itemsLength={items.length}
                 updateData={handleUpdate}
@@ -202,6 +208,7 @@ export function CylinderDelivery({navigation}) {
             <View style={styles.tableContainer} key={_.id}>
               <CollectTable
                 index={index}
+                data={weightsData}
                 itemsLength={collectItems.length}
                 updateData={handleCollectUpdate}
                 onRemove={handleCollectRemove}

@@ -10,9 +10,7 @@ import DropDownFile from './DropDown';
 import weights from '../dummydata/containerweight.json';
 import {useGetApi} from '../services/useApi';
 
-const DeliverTable = ({onRemove, index, updateData, itemsLength}) => {
-  //api
-  const {data, isLoading, error} = useGetApi('/weights');
+const DeliverTable = ({onRemove, index, updateData, itemsLength, data}) => {
   const [quantity, setQuantity] = useState('1');
   const [selectedWeight, setSelectedWeight] = useState('');
   const [rate, setRate] = useState(0);

@@ -9,8 +9,7 @@ import React, {useEffect, useState} from 'react';
 import DropDownFile from './DropDown';
 import {useGetApi} from '../services/useApi';
 
-const CollectTable = ({onRemove, index, updateData, itemsLength}) => {
-  const {data, isLoading, error} = useGetApi('/weights');
+const CollectTable = ({onRemove, index, updateData, itemsLength, data}) => {
   const [quantity, setQuantity] = useState('0');
   const [selectedWeight, setSelectedWeight] = useState('');
 

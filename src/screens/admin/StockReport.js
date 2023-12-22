@@ -13,10 +13,47 @@ const StockReport = () => {
     }
   }, [data]);
 
+  const renderItemSummary = ({item, index}) => (
+    <View style={[styles.cardfilled, styles.shadow]} key={index}>
+      <Text style={styles.filledText}>{item.weight}</Text>
+      <View style={styles.cardContainer}>
+        <View style={styles.leftContainer}>
+          <Text style={styles.filledText}>{'Filled'}</Text>
+        </View>
+        <View style={styles.rightContainer}>
+          <Text style={styles.filledValue}>{item.filled}</Text>
+        </View>
+      </View>
+      <View style={styles.cardContainer}>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.filledText}>{'Empty'}</Text>
+        </View>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.filledValue}>{item.empty}</Text>
+        </View>
+      </View>
+    </View>
+  );
+
   const renderItem = ({item, index}) => (
     <View style={[styles.card, styles.shadow]} key={index}>
       <Text style={styles.filledText}>{item.weight}</Text>
-      <Text style={styles.filledValue}>{item.quantity}</Text>
+      <View style={styles.cardContainer}>
+        <View style={styles.leftContainer}>
+          <Text style={styles.filledText}>{'Filled'}</Text>
+        </View>
+        <View style={styles.rightContainer}>
+          <Text style={styles.filledValue}>{item.filled}</Text>
+        </View>
+      </View>
+      <View style={styles.cardContainer}>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.filledText}>{'Empty'}</Text>
+        </View>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.filledValue}>{item.empty}</Text>
+        </View>
+      </View>
     </View>
   );
 
@@ -31,21 +68,12 @@ const StockReport = () => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
         <Text style={styles.totalsummary}>Total summary</Text>
-        {data?.summaryreport?.map(item => (
-          <View key={item.id}>
-            <Text style={styles.weightText}>{item.weight}</Text>
-            <View style={styles.subcontainer}>
-              <View style={[styles.cardfilled, styles.shadow]}>
-                <Text style={styles.filledText}>{'Filled'}</Text>
-                <Text style={styles.filledValue}>{item.filled}</Text>
-              </View>
-              <View style={[styles.cardempty, styles.shadow]}>
-                <Text style={styles.filledText}>{'Empty'}</Text>
-                <Text style={styles.filledValue}>{item.empty}</Text>
-              </View>
-            </View>
-          </View>
-        ))}
+        <FlatList
+          data={data?.summaryreport ?? []}
+          renderItem={renderItemSummary}
+          keyExtractor={(_, i) => i.toString()}
+          numColumns={2}
+        />
         <Text style={styles.locationsummary}>Location summary</Text>
         <View style={styles.dataContainer}>
           <View style={styles.titleContainer}>
@@ -66,16 +94,9 @@ const StockReport = () => {
             />
           </View>
         </View>
-        <Text style={styles.tableTitle}>{'Active Stock (Empty)'}</Text>
+        <Text style={styles.tableTitle}>{'Active Stock'}</Text>
         <FlatList
-          data={selectedItem?.empty ?? []}
-          renderItem={renderItem}
-          keyExtractor={(_, index) => index.toString()}
-          numColumns={2}
-        />
-        <Text style={styles.tableTitle}>{'Active Stock (Filled)'}</Text>
-        <FlatList
-          data={selectedItem?.filled ?? []}
+          data={selectedItem?.stock ?? []}
           renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}
           numColumns={2}
@@ -94,6 +115,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
   },
+  cardContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomContainer: {flex: 1},
+  leftContainer: {flex: 1, marginTop: 10},
+  rightContainer: {flex: 1, marginTop: 10},
   contentContainer: {paddingBottom: 50},
   totalsummary: {
     fontSize: 20,
@@ -114,11 +143,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   cardfilled: {
+    width: '45%',
     paddingVertical: 20,
     borderRadius: 10,
-    paddingHorizontal: 50,
+    paddingHorizontal: 20,
     backgroundColor: 'lightblue',
-    marginStart: 20,
+    margin: 10,
   },
   cardempty: {
     paddingVertical: 20,
@@ -129,12 +159,15 @@ const styles = StyleSheet.create({
   },
   weightText: {marginVertical: 10, fontWeight: '600'},
   filledText: {
-    marginBottom: 10,
     textAlign: 'center',
     color: 'black',
     fontWeight: 'bold',
   },
-  filledValue: {textAlign: 'center', color: 'black', fontSize: 24},
+  filledValue: {
+    textAlign: 'center',
+    color: 'black',
+    fontSize: 18,
+  },
   locationsummary: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -149,7 +182,7 @@ const styles = StyleSheet.create({
   valueContainer: {flex: 1, borderWidth: 1, borderRadius: 5},
   tableTitle: {fontWeight: 'bold', fontSize: 14, marginVertical: 20},
   card: {
-    flex: 1,
+    width: '45%',
     backgroundColor: '#fff',
     margin: 8,
     padding: 16,
