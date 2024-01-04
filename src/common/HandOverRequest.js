@@ -18,10 +18,7 @@ const HandOverRequest = () => {
   const addRequestToList = () => {};
   const {data: customerData, error, isLoading} = useGetApi('/customers');
   const {data: categories, error1, isLoading1} = useGetApi('/weights');
-  const types = [{name: 'empty'}, {name: 'filled'}];
-  console.log('customerData', customerData);
-  console.log('categories', categories);
-  console.log('types', types);
+  const types = [{name: 'Empty'}, {name: 'Filled'}];
 
   return (
     <View style={styles.contentContainer}>
@@ -79,6 +76,7 @@ const HandOverRequest = () => {
             style={styles.textinput}
             onChangeText={setQuantity}
             value={quantity}
+            keyboardType="numeric"
           />
         </View>
       </View>
@@ -104,14 +102,14 @@ const styles = StyleSheet.create({
   },
   titleText: {flex: 0.5, color: 'black', textAlign: 'center'},
   textinput: {
-    flex: 1,
-    marginStart: 0,
+    // flex: 1,
+    marginStart: 10,
     borderRadius: 10,
     backgroundColor: 'ghostwhite',
     color: 'black',
     padding: 0,
     paddingStart: 2,
-    height: 40,
+    height: 30,
   },
   loginBtn: {
     width: '80%',
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   button: {flex: 1, justifyContent: 'flex-end'},
-  dataContainer: {flexDirection: 'row', marginBottom: 5},
+  dataContainer: {flexDirection: 'row', marginBottom: 5, alignItems: 'center'},
   titleContainer: {
     flex: 1,
     alignItems: 'center',

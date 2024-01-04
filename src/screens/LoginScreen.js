@@ -1,180 +1,126 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Text, View, TextInput, TouchableOpacity} from 'react-native';
 import {styles} from './navigation/AuthStack';
 import {AuthContext} from '../contexts/AuthContext';
 
 export const LoginScreen = ({navigation}) => {
-  const [signInLoading, setSignInLoading] = useState(false);
+  const [touchstatus, setTouchStatus] = useState({
+    touchedEmail: false,
+    touchedPassword: false,
+  });
   const [state, setState] = useState({
     emailId: '',
     password: '',
     userData: {fname: '', lastName: ''},
   });
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
-  const {isLoading, userToken, login} = useContext(AuthContext);
+  const {isLoading, login} = useContext(AuthContext);
 
-  const validateForm = () => {
-    let errors = {};
-
-    // Validate email field
-    if (!state.emailId) {
-      errors.email = 'Email is required.';
-    } else if (!/\S+@\S+\.\S+/.test(state.emailId)) {
-      errors.email = 'Email is invalid.';
+  useEffect(() => {
+    const errorObj = {};
+    // Validate email if touched
+    if (touchstatus.touchedEmail) {
+      if (state.emailId.trim() === '') {
+        errorObj.email = 'Email is required';
+      } else if (!isValidEmail(state.emailId)) {
+        errorObj.email = 'Invalid email';
+      } else {
+        errorObj.email = '';
+      }
     }
 
-    // Validate password field
-    if (!state.password) {
-      errors.password = 'Password is required.';
-    } else if (state.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters.';
+    // Validate password if touched
+    if (touchstatus.touchedPassword) {
+      if (state.password.trim() === '') {
+        errorObj.password = 'Password is required';
+      } else if (state.password.length < 6) {
+        errorObj.password = 'Password must be at least 6 characters';
+      } else {
+        errorObj.password = '';
+      }
     }
+    setErrors(errorObj);
+  }, [
+    state.emailId,
+    state.password,
+    touchstatus.touchedEmail,
+    touchstatus.touchedPassword,
+  ]);
 
-    // Set the errors and update form validity
-    setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
+  const isValidEmail = value => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
+
+  const isSubmitDisabled = () => {
+    return (
+      state.emailId.trim() === '' ||
+      state.password.trim() === '' ||
+      errors.email !== '' ||
+      errors.password !== '' ||
+      isLoading
+    );
   };
 
   const onPressLogin = async (email, password) => {
-    // Call backend api to authenticate
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword(email, pass)
-    //   .then(res => {
-    //     alert(res.user.email);
-    //   })
-    //   .catch(error => {
-    //     // Handle Errors here.
-    //     console.log(error.message);
-    //   });
-    //this.setState({ userData: JSON.stringify( res.user) });
-    setSignInLoading(true);
-    login();
-
-    // axios({
-    //   method: 'POST',
-    //   url: '',
-    //   params: {
-    //     key: '',
-    //   },
-    //   data: {
-    //     email,
-    //     password,
-    //   },
-    // })
-    //   .then(res => {
-    //     console.log(res.data);
-    //   })
-    //   .catch(e => console.log(e));
-    //dummy data
-    const user = {
-      fname: 'Rohit',
-      lastName: 'Agrawal',
-      token: 'hskfhksfkhsfkskhfhsf',
-    };
-
-    // dispatch({
-    //   type: 'SIGN_IN',
-    //   token: user.token,
-    // });
-
-    setState({
-      ...this.state,
-      userData: {
-        name: user.fname,
-        email: user.lastName,
-      },
-    });
-    try {
-      await AsyncStorage.setItem('userData', JSON.stringify(user));
-    } catch (error) {
-      console.log('Error saving data', error);
-    }
+    login({email, password});
   };
-
-  useEffect(() => {
-    console.log(state, '- Has changed');
-    (async () => {
-      try {
-        let userData = await AsyncStorage.getItem('userData');
-        if (userData != null) {
-          let data = JSON.parse(userData);
-          console.log('Storage data' + JSON.stringify(data));
-          setState({
-            ...this.state,
-            userData: {
-              fname: data.fname,
-              lastName: data.lastName,
-            },
-          });
-        }
-      } catch (error) {
-        console.log('Something went wrong', error);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleOnChange = (text, input) => {
     setState(prevState => ({...prevState, [input]: text}));
   };
 
-  // if there's a user show the message below
-  // if (state.userData) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text style={styles.subTitle}>
-  //         {state.userData.fname} is loggged in
-  //       </Text>
-  //     </View>
-  //   );
-  // }
   return (
     <View style={styles.container}>
       <Text style={styles.title}> Login</Text>
-      <Text style={styles.subTitle}> Welcome Back!</Text>
+      <Text style={styles.subTitle}> Welcome!</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
           placeholder="Email"
+          value={state.emailId}
           placeholderTextColor="#A9A9A9"
           onChangeText={text => {
             handleOnChange(text, 'emailId');
           }}
-          onBlur={() => validateForm()}
-          onFocus={() => (errors.email = '')}
+          onBlur={() =>
+            setTouchStatus(prevState => ({...prevState, touchedEmail: true}))
+          }
         />
       </View>
+      {touchstatus.touchedEmail && errors.email !== '' && (
+        <Text style={styles.error}>{errors.email}</Text>
+      )}
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
           secureTextEntry
+          value={state.password}
           placeholder="Password"
           placeholderTextColor="#A9A9A9"
           onChangeText={text => {
             handleOnChange(text, 'password');
           }}
-          onBlur={() => validateForm()}
-          onFocus={() => (errors.password = '')}
+          onFocus={() =>
+            setTouchStatus(prevState => ({...prevState, touchedPassword: true}))
+          }
         />
       </View>
+      {touchstatus.touchedPassword && errors.password !== '' && (
+        <Text style={styles.error}>{errors.password}</Text>
+      )}
       <TouchableOpacity
         onPress={() => onPressLogin(state.emailId, state.password)}
+        disabled={isSubmitDisabled()}
         style={
-          state.emailId == '' || state.password == ''
+          isSubmitDisabled()
             ? [styles.loginBtn, {backgroundColor: 'lightgray'}]
             : styles.loginBtn
         }>
         <Text style={styles.loginText}>LOGIN </Text>
       </TouchableOpacity>
       {/* Display error messages */}
-      {Object.values(errors).map((error, index) => (
-        <Text key={index} style={styles.error}>
-          {error}
-        </Text>
-      ))}
     </View>
   );
 };

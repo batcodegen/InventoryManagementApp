@@ -7,56 +7,51 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  SectionList,
 } from 'react-native';
 import {StatusBar} from 'native-base';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import BottomSheetComponent from '../common/BottomSheetComponent';
 import {ScrollView} from 'react-native-gesture-handler';
 import HandOverRequest from '../common/HandOverRequest';
-import {useGetApi} from '../services/useApi';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    customerName: 'Alex',
-    type: 'empty',
-    category: '12kg',
-    quantity: '2',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    customerName: 'Second',
-    type: 'Filled',
-    category: '17kg',
-    quantity: '5',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    customerName: 'Third',
-    type: 'empty',
-    category: '21kg',
-    quantity: '2',
-  },
-];
+// from
+// request created section -> 1 button (cancel)
+// request recevied section -> 2 button (accept, reject)
+// only pending request to be shown
+// refresh button to be shown on header
 
-const Item = ({item, onPress, backgroundColor, textColor}) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, {backgroundColor}]}>
+const Item = ({
+  item,
+  onPress,
+  backgroundColor,
+  textColor,
+  isOfCreateRequest,
+  isLastItem,
+}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={[styles.item, {backgroundColor, marginBottom: isLastItem ? 10 : 0}]}>
     <View style={styles.textContainer}>
-      <Text style={[styles.title, {color: textColor}]}>
-        {item.customerName}
-      </Text>
+      <Text style={[styles.title, {color: textColor}]}>{item.driver}</Text>
       <Text style={[styles.subTitle, {color: textColor}]}>
-        {item.category} {item.type} : {item.quantity}
+        {item.product} {item.type} : {item.quantity}
       </Text>
     </View>
     <View style={styles.buttonContainer}>
-      <Pressable
-        style={styles.plusContainer}
-        onPress={() => {
-          onAcceptRequest();
-        }}>
-        <Ionicon name={'checkmark-circle-outline'} size={35} color={'green'} />
-      </Pressable>
+      {isOfCreateRequest ? null : (
+        <Pressable
+          style={styles.plusContainer}
+          onPress={() => {
+            onAcceptRequest();
+          }}>
+          <Ionicon
+            name={'checkmark-circle-outline'}
+            size={35}
+            color={'green'}
+          />
+        </Pressable>
+      )}
       <Pressable
         style={styles.plusContainer}
         onPress={() => {
@@ -76,7 +71,7 @@ export function HandoverScreen() {
   const renderItem = ({item}) => {
     const backgroundColor = item.id === selectedId ? '#6495ED' : 'white';
     const color = item.id === selectedId ? 'white' : 'black';
-
+    const isLastItem = isLastItemInCreatedRequest(item);
     return (
       <ScrollView>
         <Item
@@ -84,9 +79,23 @@ export function HandoverScreen() {
           onPress={() => setSelectedId(item.id)}
           backgroundColor={backgroundColor}
           textColor={color}
+          isLastItem={isLastItem}
+          isOfCreateRequest={doesDriverExistInCreatedRequests(item.id)}
         />
       </ScrollView>
     );
+  };
+
+  function isLastItemInCreatedRequest(item) {
+    const createdRequest = respdata.createdrequest || [];
+    return createdRequest[createdRequest.length - 1] === item;
+  }
+
+  const doesDriverExistInCreatedRequests = driverId => {
+    if (respdata && respdata.createdrequest) {
+      return respdata.createdrequest.some(request => request.id === driverId);
+    }
+    return false;
   };
 
   const onPressHandover = () => {
@@ -95,11 +104,19 @@ export function HandoverScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
+      <SectionList
+        sections={[
+          {title: 'Created request', data: respdata.createdrequest},
+          {title: 'Received request', data: respdata.receivedrequest},
+        ]}
         renderItem={renderItem}
+        renderSectionHeader={({section}) => (
+          <View style={styles.titlewrap}>
+            <Text style={styles.taskTitle}>{section.title}</Text>
+          </View>
+        )}
         keyExtractor={item => item.id}
-        extraData={selectedId}
+        stickySectionHeadersEnabled
       />
       <TouchableOpacity
         onPress={() => onPressHandover()}
@@ -118,6 +135,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
   },
+  titlewrap: {
+    padding: 10,
+    backgroundColor: 'white',
+  },
+  taskTitle: {fontWeight: 'bold', fontSize: 16},
   item: {
     flex: 1,
     flexDirection: 'row',
@@ -157,3 +179,42 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
 });
+
+const respdata = {
+  createdrequest: [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      driver: 'Alex', // driver
+      type: 'empty',
+      product: '12kg', // product
+      quantity: '2',
+      status: 'pending', // TBD: specific request to be shown
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      driver: 'Second',
+      type: 'Filled',
+      product: '17kg',
+      quantity: '5',
+      status: 'rejected',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      driver: 'Third',
+      type: 'empty',
+      product: '21kg',
+      quantity: '2',
+      status: 'pending',
+    },
+  ],
+  receivedrequest: [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28bs',
+      driver: 'Alex', // driver
+      type: 'empty',
+      product: '12kg', // product
+      quantity: '2',
+      status: 'pending', // TBD: specific request to be shown
+    },
+  ],
+};

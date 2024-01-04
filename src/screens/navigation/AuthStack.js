@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   },
   error: {
     color: 'red',
-    fontSize: 20,
+    fontSize: 14,
     marginBottom: 12,
   },
 });

@@ -1,7 +1,7 @@
 {
   "summaryreport": [
     {
-      "weight": "12kg",
+      "weight": "12kg", // product
       "filled": 30,
       "empty": 12
     },

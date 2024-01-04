@@ -1,19 +1,18 @@
 import axios from 'axios';
 
-const instance = axios.create({
-  baseURL: 'https://some-domain.com/api/',
-  timeout: 1000,
-  headers: {'X-Custom-Header': 'foobar'},
+export const instance = axios.create({
+  baseURL: 'http://142.93.209.63:8000/api',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: '*/*',
+  },
 });
 
-const getRequest = async ({url, requestParams}) => {
-  const response = await instance.get(url, requestParams);
-  return response.data;
+export const setHeaderToken = token => {
+  instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
-const postRequest = async ({url, body}) => {
-  const response = await instance.post(url, body);
-  return response.data;
-};
-
-export {getRequest, postRequest};
+export const ENDPOINT = Object.freeze({
+  LOGIN: '/login/',
+});

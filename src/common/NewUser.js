@@ -1,4 +1,6 @@
 import {
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -6,52 +8,80 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-
-const CollectUserDetail = ({
-  setValue,
-  fieldValue,
-  title,
-  multiline = false,
-}) => (
-  <View style={styles.subcontainer}>
-    <Text style={styles.titleText}>{title}</Text>
-    <TextInput
-      textBreakStrategy="simple"
-      style={[styles.textinput, {height: multiline ? 40 : 30}]}
-      onChangeText={setValue}
-      value={fieldValue}
-      multiline={multiline}
-    />
-  </View>
-);
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import CustomHTextView from './CustomHTextView';
 
 const NewUser = () => {
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
+  const [name, setBusinessName] = useState('');
+  const [billingAddress, setBillingAddress] = useState('');
   const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [gstNumber, setGstNumber] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [contactPerson, setContactPerson] = useState('');
+  const [phonenum, setPhoneNum] = useState('');
 
   const addUserToList = () => {};
 
   return (
     <View style={styles.contentContainer}>
       <Text style={styles.title}>Add new user</Text>
-      <CollectUserDetail setValue={setName} fieldValue={name} title={'Name'} />
-      <CollectUserDetail
-        setValue={setAddress}
-        fieldValue={address}
-        title={'Address'}
-        multiline={true}
-      />
-      <CollectUserDetail
-        setValue={setEmail}
-        fieldValue={email}
-        title={'Email'}
-      />
-      <View style={styles.button}>
-        <TouchableOpacity onPress={addUserToList} style={styles.loginBtn}>
-          <Text style={styles.loginText}>Create User </Text>
-        </TouchableOpacity>
-      </View>
+      <BottomSheetScrollView
+        style={styles.scroll}
+        showsVerticalScrollIndicator={false}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={50}>
+          <CustomHTextView
+            setValue={setBusinessName}
+            fieldValue={name}
+            title={'Business name'}
+          />
+          <CustomHTextView
+            setValue={setCode}
+            fieldValue={code}
+            title={'Code'}
+          />
+          <CustomHTextView
+            setValue={setGstNumber}
+            fieldValue={gstNumber}
+            title={'GST number'}
+          />
+          <CustomHTextView
+            setValue={setDeliveryAddress}
+            fieldValue={deliveryAddress}
+            title={'Delivery address'}
+            multiline={true}
+          />
+          <CustomHTextView
+            setValue={setContactPerson}
+            fieldValue={contactPerson}
+            title={'Contact person'}
+          />
+          <CustomHTextView
+            setValue={setEmail}
+            fieldValue={email}
+            title={'Email'}
+          />
+          <CustomHTextView
+            setValue={setPhoneNum}
+            fieldValue={phonenum}
+            title={'Phone number'}
+          />
+          <CustomHTextView
+            setValue={setBillingAddress}
+            fieldValue={billingAddress}
+            title={'Billing address'}
+            multiline={true}
+          />
+
+          <View style={styles.button}>
+            <TouchableOpacity onPress={addUserToList} style={styles.loginBtn}>
+              <Text style={styles.loginText}>Create User </Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </BottomSheetScrollView>
     </View>
   );
 };
@@ -98,4 +128,5 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   button: {flex: 1, justifyContent: 'flex-end'},
+  scroll: {marginBottom: 100},
 });

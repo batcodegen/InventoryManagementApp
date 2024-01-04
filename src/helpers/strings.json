@@ -5,7 +5,7 @@
   "pendingPayment": "Pending Payment",
   "delivered": "Delivered",
   "collected": "Collected",
-  "paymentToCollect": "Payment to be collected",
+  "paymentToCollect": "Bill amount",
   "securityDeposit": "Security Deposit",
   "paymentCollected": "Payment Collected",
   "balance": "Balance",
@@ -13,5 +13,6 @@
   "discount": "Discount",
   "rate": "Rate",
   "category": "Category",
-  "type":"Type"
+  "type": "Type",
+  "modeofpayment": "Mode of payment"
 }

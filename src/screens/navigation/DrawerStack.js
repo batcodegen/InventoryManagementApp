@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {
   createDrawerNavigator,
@@ -8,13 +8,19 @@ import {
 import {HomeScreen} from '../HomeScreen';
 import {HandoverScreen} from '../HandoverScreen';
 import {CylinderDelivery} from '../CylinderDelivery';
+import {AuthContext} from '../../contexts/AuthContext';
 
 function CustomDrawerContent(props) {
+  const {userData} = useContext(AuthContext);
   return (
     <>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerHeader}>
-          <Text style={styles.customerName}>Welcome customer</Text>
+          <Text style={styles.welcomestyle}>{'Welcome'}</Text>
+          <Text
+            style={
+              styles.customerName
+            }>{`${userData?.first_name} ${userData?.last_name}`}</Text>
         </View>
         <View style={{flex: 1}}>
           <DrawerItemList {...props} />
@@ -74,6 +80,11 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  welcomestyle: {
+    fontSize: 20,
+    textAlign: 'center',
+    padding: 10,
   },
   customerName: {
     fontSize: 20,

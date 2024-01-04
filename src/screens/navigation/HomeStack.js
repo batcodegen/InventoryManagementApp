@@ -1,22 +1,25 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useContext} from 'react';
 import {DrawerScreenStack} from './DrawerStack';
 import {AdminDrawerScreenStack} from './AdminDrawerStack';
+import {AuthContext} from '../../contexts/AuthContext';
 
 const HomeStack = createNativeStackNavigator();
 export function HomeScreenStack() {
+  const {userData} = useContext(AuthContext);
+  console.log('--ser--', userData);
   return (
     <HomeStack.Navigator>
-      {true ? (
+      {userData?.role !== 'admin' ? (
         <HomeStack.Screen
-          name="DrawerHome"
-          component={DrawerScreenStack}
+          name="AdminDrawerHome"
+          component={AdminDrawerScreenStack}
           options={{headerShown: false}}
         />
       ) : (
         <HomeStack.Screen
-          name="AdminDrawerHome"
-          component={AdminDrawerScreenStack}
+          name="DrawerHome"
+          component={DrawerScreenStack}
           options={{headerShown: false}}
         />
       )}

@@ -8,7 +8,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import DropDownFile from './DropDown';
 import weights from '../dummydata/containerweight.json';
-import {useGetApi} from '../services/useApi';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const DeliverTable = ({onRemove, index, updateData, itemsLength, data}) => {
   const [quantity, setQuantity] = useState('1');
@@ -68,7 +68,7 @@ const DeliverTable = ({onRemove, index, updateData, itemsLength, data}) => {
         </View>
         {index > 0 ? (
           <TouchableOpacity style={{flex: 0.2}} onPress={() => onRemove(index)}>
-            <Text>{'-'}</Text>
+            <AntDesign name={'minuscircle'} size={18} color={'red'} />
           </TouchableOpacity>
         ) : (
           <View style={{flex: itemsLength > 1 ? 0.2 : 0}} />
